@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+package assfire.api.v1.optimizer;
+option go_package = "assfire.org/api/v1/router";
+
+message GeoPoint {
+    sint32 lat = 1;
+    sint32 lon = 2;
+}
+
+message Solution {
+
+}
+
+message OptimizationTask {
+    Solution initial_solution = 1;
+}
+
+message PublishOptimizationTaskRequest {
+    OptimizationTask task = 1;
+}
+
+message PublishOptimizationTaskResponse {
+    string id = 1;
+}
+
+message GetLatestSolutionRequest {
+    string id = 1;
+}
+
+message GetLatestSolutionResponse {
+    Solution solution = 1;
+}
+
+enum SolutionStatus {
+    SOLUTION_STATUS_QUEUED = 0;
+    SOLUTION_STATUS_IN_PROGRESS = 1;
+    SOLUTION_STATUS_FAILED = 2; // Terminal
+    SOLUTION_STATUS_CANCELLED = 3; // Terminal
+    SOLUTION_STATUS_FINISHED = 4; // Terminal
+}
+
+message GetSolutionStatusRequest {
+    string id = 1;
+}
+
+message GetSolutionStatusResponse {
+    SolutionStatus status = 1;
+}
+
+message ListenToSolutionUpdatesRequest {
+    string id = 1;
+}
+
+message ListenToSolutionUpdatesResponse {
+    Solution solution = 1;
+    SolutionStatus status = 2;
+}
+
+message CancelOptimizationTaskRequest {
+    string id = 1;
+}
+
+message CancelOptimizationTaskResponse {
+
+}
+
+service OptimizerService {
+    rpc PublishOptimizationTask(PublishOptimizationTaskRequest) returns (PublishOptimizationTaskResponse){}
+    rpc GetLatestSolution(GetLatestSolutionRequest) returns (GetLatestSolutionResponse) {}
+    rpc GetSolutionStatus(GetSolutionStatusRequest) returns (GetSolutionStatusResponse) {}
+    rpc ListenToSolutionUpdates(ListenToSolutionUpdatesRequest) returns (stream ListenToSolutionUpdatesResponse) {}
+    rpc CancelOptimizationTask(CancelOptimizationTaskRequest) returns (CancelOptimizationTaskResponse) {}
+}
+
+message GetAvailableStrategiesRequest {
+  
+} 
+
+message GetAvailableStrategiesResponse {
+  repeated string strategies = 1;
+} 
+
+message GetAvailableTransportProfilesRequest {
+  
+}
+
+message GetAvailableTransportProfilesResponse {
+  repeated string transport_profiles = 1;
+}
+
+service ConfigurationService {
+    rpc GetAvailableStrategies(GetAvailableStrategiesRequest) return (GetAvailableStrategiesResponse) {}
+    rpc GetAvailableTransportProfiles(GetAvailableTransportProfilesRequest) returns (GetAvailableTransportProfilesResponse) {};
+}
