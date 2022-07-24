@@ -41,6 +41,24 @@ namespace assfire::optimizer {
         void set_cost(Cost cost) {
             _cost = cost;
         }
+        
+        std::string to_string() const {
+            std::string result("{");
+            result += _vehicle_id;
+            result += ": ";
+            bool first = true;
+            for(const Waypoint& wp : waypoints()) {
+                result += wp.to_string();
+                if(!first) {
+                    result += " - ";
+                }
+                first = false;
+            }
+            result += " ** ";
+            result += std::to_string(cost());
+            result += "}";
+            return result;
+        }
 
       private:
         Vehicle::Id _vehicle_id;

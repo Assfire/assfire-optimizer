@@ -3,6 +3,8 @@
 #include "Order.hpp"
 #include "TimeWindow.hpp"
 
+#include <string>
+
 namespace assfire::optimizer {
     class Waypoint {
       public:
@@ -45,6 +47,15 @@ namespace assfire::optimizer {
 
         bool is_finished() const {
             return state() == State::FINISHED;
+        }
+
+        std::string to_string() const {
+            std::string result("<");
+            result += order_id();
+            result += ": ";
+            result += visit_time().to_string();
+            result += ">";
+            return result;
         }
 
       private:

@@ -44,7 +44,7 @@ namespace assfire::optimizer {
             return _end - _start;
         }
 
-        std::string to_string() {
+        std::string to_string() const {
             return std::string("[") + absl::FormatTime(_start) + " - " + absl::FormatTime(_end) + "]";
         }
 
