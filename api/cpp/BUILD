@@ -16,5 +16,8 @@ cc_library(
         "assfire/optimizer/api/Vehicle.hpp",
         "assfire/optimizer/api/Waypoint.hpp",
     ],
+    include_prefix = "assfire/optimizer/api",
+    strip_include_prefix = "assfire/optimizer/api",
+    visibility = ["//visibility:public"],
     deps = ["@com_google_absl//absl/time"],
 )
