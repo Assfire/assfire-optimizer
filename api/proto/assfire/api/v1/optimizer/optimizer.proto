@@ -8,12 +8,70 @@ message GeoPoint {
     sint32 lon = 2;
 }
 
-message Solution {
+message TimeWindow {
+    int32 start = 1;
+    int32 end = 2;
+}
 
+message Waypoint {
+    enum State {
+        WAYPOINT_STATE_PLANNED = 0;
+        WAYPOINT_STATE_STARTED = 1;
+        WAYPOINT_STATE_FINISHED = 2;
+    };
+
+    int32 order_id = 1;
+    TimeWindow visit_time = 2;
+    State state = 3;
+}
+
+message Trip {
+    int32 vehicle_id = 1;
+    repeated Waypoint waypoints = 2;
+}
+
+message Solution {
+    repeated Trip trips = 1;
+}
+
+// May be visited multiple times during a trip, e.g. hotels, warehouses etc.
+message BasePoint {
+    enum Type {
+        BASE_POINT_TYPE_HOTEL = 0;
+    }
+    enum VisitCostModel {
+        BASE_POINT_VISIT_COST_MODEL_PER_WINDOW = 0;
+    }
+    GeoPoint location = 1;
+    repeated TimeWindow time_windows = 2;
+    Type type = 3;
+    int32 visit_cost = 4;
+}
+
+// Is only visited once
+message Order {
+    enum Type {
+        ORDER_TYPE_VISIT = 0;
+    }
+    enum VisitCostModel {
+        ORDER_VISIT_COST_MODEL_PER_VISIT = 0;
+    }
+    GeoPoint location = 1;
+    repeated TimeWindow time_windows = 2;
+    Type type = 3;
+    int32 visit_duration_seconds = 4;
+    int32 visit_cost = 5;
+}
+
+message Vehicle {
+    string transport_profile_id = 1;
 }
 
 message OptimizationTask {
     Solution initial_solution = 1;
+    repeated Vehicle vehicles = 2;
+    repeated Order orders = 3;
+    repeated BasePoint base_points = 4;
 }
 
 message PublishOptimizationTaskRequest {
