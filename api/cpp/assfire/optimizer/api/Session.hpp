@@ -1,27 +1,22 @@
 #pragma once
 
-#include <optional>
+#include "Solution.hpp"
+
 #include <functional>
-#include <Solution.hpp>
+#include <optional>
 
 namespace assfire::optimizer {
-    class RouteOptimizationSession  {
-    public:
-        enum class Status = {
-            QUEUED,
-            IN_PROGRESS,
-            FINISHED,
-            FAILED,
-            CANCELLED
-        };
+    class Session {
+      public:
+        enum class Status { QUEUED, IN_PROGRESS, FINISHED, FAILED, CANCELLED };
 
         using StatusListener = std::function<void(Status)>;
 
-        virtual ~RouteOptimizationSession() = default;
-        virtual void cancel() = 0;
-        virtual void wait_until_completed() const = 0;
-        virtual Status get_current_status() const = 0;
-        void set_status_listener(StatusListener listener) = 0;
-        std::optional<Solution> get_latest_solution() const = 0;
+        virtual ~Session()                                          = default;
+        virtual void cancel()                                       = 0;
+        virtual void wait_until_completed() const                   = 0;
+        virtual Status get_current_status() const                   = 0;
+        virtual void set_status_listener(StatusListener listener)   = 0;
+        virtual std::optional<Solution> get_latest_solution() const = 0;
     };
-}
+} // namespace assfire::optimizer

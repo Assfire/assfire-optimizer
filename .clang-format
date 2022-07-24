@@ -1,5 +1,6 @@
 ---
 AccessModifierOffset: '-2'
+ColumnLimit: 150
 AlignAfterOpenBracket: Align
 AlignConsecutiveMacros: 'true'
 AlignConsecutiveAssignments: 'true'
