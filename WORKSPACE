@@ -86,6 +86,13 @@ http_archive(
     urls = ["https://github.com/bazelbuild/rules_cc/archive/262ebec3c2296296526740db4aefce68c80de7fa.zip"],
 )
 
+git_repository(
+    name = "assfire_router",
+    commit = "9a4acb68ef4023fca3ade8342f8cd4b2949b7958",
+    remote = "https://github.com/Assfire/assfire-router.git",
+    shallow_since = "1658053260 +0300",
+)
+
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 
 gazelle_dependencies()
