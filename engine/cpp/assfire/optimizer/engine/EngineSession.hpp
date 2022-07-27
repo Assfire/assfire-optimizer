@@ -5,21 +5,24 @@
 #include "assfire/optimizer/api/Session.hpp"
 #include "assfire/optimizer/api/Task.hpp"
 
+#include <atomic>
 #include <future>
 #include <memory>
-#include <atomic>
 
 namespace assfire::optimizer {
     class EngineSession : public Session {
       public:
-        EngineSession(std::shared_ptr<Task> _task, std::shared_ptr<OptimizationContext> optimization_context, std::shared_ptr<OptimizationStrategy> optimization_strategy);
+        EngineSession(std::shared_ptr<Task> _task, std::shared_ptr<OptimizationContext> optimization_context,
+                      std::shared_ptr<OptimizationStrategy> optimization_strategy);
 
         virtual void cancel() override;
         virtual void wait_until_completed() const override;
-        virtual bool wait_until_completed(std::chrono::milliseconds interval_ms) const override;
-        virtual Status get_current_status() const override;
+        virtual bool wait_until_completed_for(std::chrono::milliseconds interval_ms) const override;
+        virtual Status current_status() const override;
         virtual void set_status_listener(StatusListener listener) override;
-        virtual std::optional<Solution> get_latest_solution() const override;
+        virtual std::optional<Solution> latest_solution() const override;
+        virtual uint8_t current_progress() const override;
+        virtual void set_progress_listener(ProgressListener listener) override;
 
         void start();
 

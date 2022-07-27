@@ -18,8 +18,7 @@ namespace assfire::optimizer {
         Task(Orders orders, BasePoints base_points, Vehicles vehicles, OptimizationStrategyId optimization_strategy_id)
             : _orders(std::move(orders)),
               _base_points(std::move(base_points)),
-              _vehicles(std::move(vehicles)),
-              _optimization_strategy_id(std::move(optimization_strategy_id)) {}
+              _vehicles(std::move(vehicles)) {}
 
         Task(const Task& rhs) = default;
         Task(Task&& rhs)      = default;
@@ -50,17 +49,9 @@ namespace assfire::optimizer {
             _vehicles = std::move(vehicles);
         }
 
-        const OptimizationStrategyId& optimization_strategy_id() const {
-            return _optimization_strategy_id;
-        }
-        void set_optimization_strategy_id(OptimizationStrategyId optimization_strategy_id) {
-            _optimization_strategy_id = std::move(optimization_strategy_id);
-        }
-
       private:
         Orders _orders;
         BasePoints _base_points;
         Vehicles _vehicles;
-        OptimizationStrategyId _optimization_strategy_id;
     };
 } // namespace assfire::optimizer

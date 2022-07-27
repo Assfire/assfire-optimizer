@@ -13,17 +13,20 @@ namespace assfire::optimizer {
           _status(Status::QUEUED) {}
 
     void EngineSession::cancel() {
-        if (_status == Status::QUEUED) { throw SessionStateError("Optimization session was not started [cancel]"); }
+        Status expected_status = Status::IN_PROGRESS;
+        if (!_status.compare_exchange_strong(expected_status, Status::CANCELLED)) {
+            throw SessionStateError("Trying to cancel optimization session that isn't in progress");
+        }
         _optimization_context->interrupt();
-        this->_status.store(Status::CANCELLED);
+        notify_status_change();
     }
 
     void EngineSession::wait_until_completed() const {
-        if (_status == Status::QUEUED) { throw SessionStateError("Optimization session was not started [wait_until_completed]"); }
+        if (_status == Status::QUEUED) { throw SessionStateError("Optimization session was not started [wait_until_completed_for]"); }
         if (_done_future.valid()) { _done_future.wait(); }
     }
 
-    bool EngineSession::wait_until_completed(std::chrono::milliseconds interval_ms) const {
+    bool EngineSession::wait_until_completed_for(std::chrono::milliseconds interval_ms) const {
         if (_status == Status::QUEUED) { throw SessionStateError("Optimization session was not started [wait_until_completed]"); }
         if (_done_future.valid()) {
             std::future_status status = _done_future.wait_for(interval_ms);
@@ -32,7 +35,7 @@ namespace assfire::optimizer {
         return true;
     }
 
-    Session::Status EngineSession::get_current_status() const {
+    Session::Status EngineSession::current_status() const {
         return _status;
     }
 
@@ -40,8 +43,16 @@ namespace assfire::optimizer {
         _status_listener = listener;
     }
 
-    std::optional<Solution> EngineSession::get_latest_solution() const {
+    void EngineSession::set_progress_listener(ProgressListener listener) {
+        _optimization_context->progress_tracker().set_progress_listener(listener);
+    }
+
+    std::optional<Solution> EngineSession::latest_solution() const {
         return _optimization_context->latest_solution();
+    }
+
+    uint8_t EngineSession::current_progress() const {
+        return _optimization_context->current_progress();
     }
 
     void EngineSession::start() {

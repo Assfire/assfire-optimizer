@@ -50,6 +50,22 @@ namespace assfire::optimizer {
             _state_manager->load(std::move(consume_state));
         }
 
+        const ProgressTracker& progress_tracker() const {
+            return *_progress_tracker;
+        }
+
+        ProgressTracker& progress_tracker() {
+            return *_progress_tracker;
+        }
+
+        void set_current_progress(uint8_t progress) {
+            _progress_tracker->set_progress(progress);
+        }
+
+        uint8_t current_progress() const {
+            return _progress_tracker->progress();
+        }
+
         bool is_interrupted() const {
             return _is_interrupted;
         }

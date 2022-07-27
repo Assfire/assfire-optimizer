@@ -1,7 +1,7 @@
 #pragma once
 
-#include <functional>
 #include <cstdint>
+#include <functional>
 
 namespace assfire::optimizer {
     class StateManager {
@@ -11,16 +11,7 @@ namespace assfire::optimizer {
 
         virtual ~StateManager() = default;
 
-        void save(uint32_t size, StateProvider provide_state) {
-            // [TODO]
-            void* buffer = malloc(size);
-            provide_state(buffer);
-            free(buffer);
-        }
-
-        void load(StateConsumer consume_state) const {
-            // [TODO]
-            consume_state(0, nullptr);
-        }
+        virtual void save(uint32_t size, StateProvider provide_state) = 0;
+        virtual bool load(StateConsumer consume_state) const          = 0;
     };
 } // namespace assfire::optimizer
