@@ -11,10 +11,12 @@ namespace assfire::optimizer {
       public:
         enum class Status { QUEUED, IN_PROGRESS, FINISHED, FAILED, CANCELLED };
 
+        using Id               = std::string;
         using StatusListener   = std::function<void(Status)>;
         using ProgressListener = std::function<void(uint8_t)>;
 
         virtual ~Session()                                                                 = default;
+        virtual Id id() const                                                              = 0;
         virtual void cancel()                                                              = 0;
         virtual void wait_until_completed() const                                          = 0;
         virtual bool wait_until_completed_for(std::chrono::milliseconds interval_ms) const = 0;

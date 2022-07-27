@@ -10,8 +10,8 @@ namespace assfire::optimizer {
       public:
         static std::string DEFAULT;
 
-        virtual std::shared_ptr<OptimizationStrategy> get_optimization_strategy(const OptimizationStrategyId& id) override;
-        virtual const std::vector<OptimizationStrategyId>& get_available_strategies() override;
+        virtual std::shared_ptr<OptimizationStrategy> get_optimization_strategy(const OptimizationStrategyId& id) const override;
+        virtual const std::vector<OptimizationStrategyId>& get_available_strategies() const override;
 
       private:
         std::unordered_map<std::string, std::shared_ptr<OptimizationStrategy>> strategies;

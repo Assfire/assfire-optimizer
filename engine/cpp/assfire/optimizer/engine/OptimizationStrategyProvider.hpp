@@ -12,7 +12,7 @@ namespace assfire::optimizer {
       public:
         virtual ~OptimizationStrategyProvider() = default;
 
-        virtual std::shared_ptr<OptimizationStrategy> get_optimization_strategy(const OptimizationStrategyId& id) = 0;
-        virtual const std::vector<OptimizationStrategyId>& get_available_strategies()                             = 0;
+        virtual std::shared_ptr<OptimizationStrategy> get_optimization_strategy(const OptimizationStrategyId& id) const = 0;
+        virtual const std::vector<OptimizationStrategyId>& get_available_strategies() const                             = 0;
     };
 } // namespace assfire::optimizer

@@ -15,6 +15,7 @@ namespace assfire::optimizer {
         EngineSession(std::shared_ptr<Task> _task, std::shared_ptr<OptimizationContext> optimization_context,
                       std::shared_ptr<OptimizationStrategy> optimization_strategy);
 
+        virtual Id id() const override;
         virtual void cancel() override;
         virtual void wait_until_completed() const override;
         virtual bool wait_until_completed_for(std::chrono::milliseconds interval_ms) const override;
@@ -29,6 +30,7 @@ namespace assfire::optimizer {
       private:
         void notify_status_change();
 
+        Id _id;
         std::shared_ptr<Task> _task;
         std::shared_ptr<OptimizationContext> _optimization_context;
         std::shared_ptr<OptimizationStrategy> _optimization_strategy;

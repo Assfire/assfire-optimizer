@@ -7,10 +7,15 @@ namespace assfire::optimizer {
 
     EngineSession::EngineSession(std::shared_ptr<Task> task, std::shared_ptr<OptimizationContext> optimization_context,
                                  std::shared_ptr<OptimizationStrategy> optimization_strategy)
-        : _task(task),
+        : _id(task->id()),
+          _task(task),
           _optimization_context(std::move(optimization_context)),
           _optimization_strategy(std::move(optimization_strategy)),
           _status(Status::QUEUED) {}
+
+    Session::Id EngineSession::id() const {
+        return _id;
+    }
 
     void EngineSession::cancel() {
         Status expected_status = Status::IN_PROGRESS;

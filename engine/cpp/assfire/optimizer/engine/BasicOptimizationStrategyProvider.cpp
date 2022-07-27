@@ -4,7 +4,7 @@ namespace assfire::optimizer {
 
     std::string BasicOptimizationStrategyProvider::DEFAULT = "Default";
 
-    std::shared_ptr<OptimizationStrategy> BasicOptimizationStrategyProvider::get_optimization_strategy(const OptimizationStrategyId& id) {
+    std::shared_ptr<OptimizationStrategy> BasicOptimizationStrategyProvider::get_optimization_strategy(const OptimizationStrategyId& id) const {
         if (id.value().empty())
         {
             return strategies.at(DEFAULT);
@@ -20,7 +20,7 @@ namespace assfire::optimizer {
         throw std::invalid_argument("Unsupported optimization strategy: " + id.value());
     }
 
-    const std::vector<OptimizationStrategyId>& BasicOptimizationStrategyProvider::get_available_strategies() {
+    const std::vector<OptimizationStrategyId>& BasicOptimizationStrategyProvider::get_available_strategies() const {
         return available_strategies;
     }
 
