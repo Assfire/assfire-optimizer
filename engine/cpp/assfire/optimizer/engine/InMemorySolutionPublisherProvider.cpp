@@ -7,16 +7,16 @@ namespace assfire::optimizer {
     class InMemorySolutionPublisher : public SolutionPublisher {
       public:
         virtual void publish(Solution solution) override {
-            std::lock_guard<std::recursive_mutex> guard(mtx);
+            std::lock_guard<std::mutex> guard(mtx);
             _stored_solution = solution;
         }
-        virtual std::optional<Solution> latest_solution() override {
-            std::lock_guard<std::recursive_mutex> guard(mtx);
+        virtual std::optional<Solution> latest_solution() const override {
+            std::lock_guard<std::mutex> guard(mtx);
             return _stored_solution;
         }
 
       private:
-        std::recursive_mutex mtx;
+        mutable std::mutex mtx;
         std::optional<Solution> _stored_solution;
     };
 

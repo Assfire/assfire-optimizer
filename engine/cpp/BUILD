@@ -27,8 +27,25 @@ cc_library(
         "assfire/optimizer/engine/StateManager.hpp",
         "assfire/optimizer/engine/StateManagerProvider.hpp",
     ],
+    include_prefix = "assfire/optimizer/engine/",
+    strip_include_prefix = "assfire/optimizer/engine/",
     deps = [
         "//api/cpp:assfire_optimizer_cc_api",
         "@assfire_router//api/cpp:assfire_router_cc_api",
+    ],
+)
+
+cc_test(
+    name = "assfire_optimizer_cc_engine_test",
+    srcs = [
+        "assfire/optimizer/engine/test/EngineSession_Test.cpp",
+        "assfire/optimizer/engine/test/MockOptimizationStrategy.hpp",
+        "assfire/optimizer/engine/test/MockProgressTracker.hpp",
+        "assfire/optimizer/engine/test/MockSolutionPublisher.hpp",
+        "assfire/optimizer/engine/test/MockStateManager.hpp",
+    ],
+    deps = [
+        ":assfire_optimizer_cc_engine",
+        "@com_google_googletest//:gtest_main",
     ],
 )

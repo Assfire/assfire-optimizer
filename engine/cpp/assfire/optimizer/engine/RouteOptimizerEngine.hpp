@@ -11,6 +11,8 @@
 namespace assfire::optimizer {
     class RouteOptimizerEngine : public RouteOptimizer {
       public:
+        RouteOptimizerEngine();
+
         RouteOptimizerEngine(std::shared_ptr<OptimizationStrategyProvider> optimization_strategy_provider,
                              std::shared_ptr<SolutionPublisherProvider> solution_publisher_provider,
                              std::shared_ptr<StateManagerProvider> state_manager_provider,

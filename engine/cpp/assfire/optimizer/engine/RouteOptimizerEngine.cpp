@@ -1,11 +1,21 @@
 #include "RouteOptimizerEngine.hpp"
 
+#include "BasicOptimizationStrategyProvider.hpp"
+#include "DiscardingStateManagerProvider.hpp"
 #include "EngineSession.hpp"
+#include "InMemorySolutionPublisherProvider.hpp"
+#include "LoggingProgressTrackerProvider.hpp"
 #include "ProgressTracker.hpp"
 #include "SolutionPublisher.hpp"
 #include "StateManager.hpp"
 
 namespace assfire::optimizer {
+
+    RouteOptimizerEngine::RouteOptimizerEngine()
+        : _optimization_strategy_provider(std::make_shared<BasicOptimizationStrategyProvider>()),
+          _solution_publisher_provider(std::make_shared<InMemorySolutionPublisherProvider>()),
+          _state_manager_provider(std::make_shared<DiscardingStateManagerProvider>()),
+          _progress_tracker_provider(std::make_shared<LoggingProgressTrackerProvider>()) {}
 
     RouteOptimizerEngine::RouteOptimizerEngine(std::shared_ptr<OptimizationStrategyProvider> optimization_strategy_provider,
                                                std::shared_ptr<SolutionPublisherProvider> solution_publisher_provider,

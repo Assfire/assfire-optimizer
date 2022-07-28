@@ -10,6 +10,6 @@ namespace assfire::optimizer {
 
         virtual void publish(Solution solution) = 0;
 
-        virtual std::optional<Solution> latest_solution() = 0;
+        virtual std::optional<Solution> latest_solution() const = 0;
     };
 } // namespace assfire::optimizer
