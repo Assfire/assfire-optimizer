@@ -45,6 +45,7 @@ namespace assfire::optimizer {
     }
 
     void EngineSession::set_status_listener(StatusListener listener) {
+        listener(current_status());
         _status_listener = listener;
     }
 
@@ -73,22 +74,27 @@ namespace assfire::optimizer {
         _done_future = std::async(std::launch::async, [&]() {
             try {
                 _optimization_strategy->solve(*_task, _optimization_context);
-                _status.store(Status::FINISHED);
+                expected_status = Status::IN_PROGRESS;
+                if (_status.compare_exchange_strong(expected_status, Status::FINISHED)) {
+                    // [TODO] Could be cancelled
+                    notify_status_change();
+                };
             } catch (const OptimizationError& e) {
                 // [TODO] Log message
                 _status.store(Status::FAILED);
+                notify_status_change();
                 throw;
             } catch (...) {
                 // [TODO] Log message
                 _status.store(Status::FAILED);
+                notify_status_change();
                 throw;
             }
-            notify_status_change();
         });
     }
 
     void EngineSession::notify_status_change() {
-        if (_status_listener) { _status_listener(_status.load()); }
+        if (_status_listener) { _status_listener(current_status()); }
     }
 
 } // namespace assfire::optimizer

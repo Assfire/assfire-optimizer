@@ -8,10 +8,13 @@ namespace assfire::optimizer {
 
     class LoggingProgressTracker : public ProgressTracker {
       public:
-        LoggingProgressTracker(Session::Id session_id) : _session_id(session_id), _current_progress(0) {}
+        LoggingProgressTracker(std::shared_ptr<assfire::logger::Logger> logger, Session::Id session_id)
+            : _logger(std::move(logger)),
+              _session_id(session_id),
+              _current_progress(0) {}
 
         virtual void set_progress(uint8_t percent) override {
-            // [TODO] Logging
+            _logger->info("Current progress for session {}: {}%", _session_id, percent);
             _current_progress = percent;
             if (_progress_listener) { _progress_listener(_current_progress); }
         }
@@ -25,13 +28,16 @@ namespace assfire::optimizer {
         }
 
       private:
+        std::shared_ptr<assfire::logger::Logger> _logger;
         Session::Id _session_id;
         std::atomic_int8_t _current_progress;
         ProgressListener _progress_listener; // [TODO] Thread safety
     };
 
+    LoggingProgressTrackerProvider::LoggingProgressTrackerProvider(std::shared_ptr<assfire::logger::Logger> logger) : _logger(logger) {}
+
     std::shared_ptr<ProgressTracker> LoggingProgressTrackerProvider::get_progress_tracker(Session::Id session_id) const {
-        return std::make_shared<LoggingProgressTracker>(session_id);
+        return std::make_shared<LoggingProgressTracker>(_logger, session_id);
     }
 
 } // namespace assfire::optimizer

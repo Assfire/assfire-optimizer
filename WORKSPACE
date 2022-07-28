@@ -87,11 +87,22 @@ http_archive(
 )
 
 git_repository(
-    name = "assfire_router",
+    name = "com_github_assfire_assfire_router",
     commit = "9a4acb68ef4023fca3ade8342f8cd4b2949b7958",
     remote = "https://github.com/Assfire/assfire-router.git",
     shallow_since = "1658053260 +0300",
 )
+
+git_repository(
+    name = "com_github_assfire_assfire_logger",
+    commit = "2a72d3e9b5545536f9f615a9b60ad8c0f97ee9ff",
+    remote = "https://github.com/Assfire/assfire-logger.git",
+    shallow_since = "1659044522 +0300"
+)
+
+load("@com_github_assfire_assfire_logger//:bazel/dependencies.bzl", "assfire_logger_dependencies_spdlog")
+
+assfire_logger_dependencies_spdlog("@com_github_assfire_assfire_logger")
 
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 
