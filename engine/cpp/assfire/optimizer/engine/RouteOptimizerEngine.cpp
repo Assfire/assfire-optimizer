@@ -16,7 +16,7 @@ namespace assfire::optimizer {
         : _optimization_strategy_provider(std::make_shared<BasicOptimizationStrategyProvider>()),
           _solution_publisher_provider(std::make_shared<InMemorySolutionPublisherProvider>()),
           _state_manager_provider(std::make_shared<DiscardingStateManagerProvider>()),
-          _progress_tracker_provider(std::make_shared<LoggingProgressTrackerProvider>(std::make_shared<assfire::logger::SpdlogDefaultLogger>())) {}
+          _progress_tracker_provider(std::make_shared<LoggingProgressTrackerProvider>()) {}
 
     RouteOptimizerEngine::RouteOptimizerEngine(std::shared_ptr<OptimizationStrategyProvider> optimization_strategy_provider,
                                                std::shared_ptr<SolutionPublisherProvider> solution_publisher_provider,

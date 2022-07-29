@@ -4,6 +4,7 @@
 #include "OptimizationStrategy.hpp"
 #include "assfire/optimizer/api/Session.hpp"
 #include "assfire/optimizer/api/Task.hpp"
+#include "assfire/logger/api/Logger.hpp"
 
 #include <atomic>
 #include <future>
@@ -37,5 +38,6 @@ namespace assfire::optimizer {
         std::future<void> _done_future;
         std::atomic<Status> _status;
         StatusListener _status_listener; // [TODO] consider thread safety
+        std::shared_ptr<assfire::logger::Logger> _logger;
     };
 } // namespace assfire::optimizer

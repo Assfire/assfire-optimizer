@@ -4,6 +4,7 @@
 #include "MockStateManager.hpp"
 #include "assfire/optimizer/engine/EngineSession.hpp"
 #include "assfire/optimizer/engine/SessionStateError.hpp"
+#include "assfire/logger/impl/spdlog/SpdlogLoggerFactory.hpp"
 
 #include <chrono>
 #include <gmock/gmock.h>
@@ -16,6 +17,10 @@ using namespace std::chrono_literals;
 
 class EngineSessionTest : public ::testing::Test {
   protected:
+    static void SetUpTestCase() {
+        assfire::logger::SpdlogLoggerFactory::register_static_factory();
+    }
+
     void SetUp() override {
         task = std::make_shared<Task>();
 

@@ -1,6 +1,7 @@
 #include "LoggingProgressTrackerProvider.hpp"
 
 #include "ProgressTracker.hpp"
+#include "assfire/logger/api/LoggerProvider.hpp"
 
 #include <atomic>
 
@@ -8,8 +9,8 @@ namespace assfire::optimizer {
 
     class LoggingProgressTracker : public ProgressTracker {
       public:
-        LoggingProgressTracker(std::shared_ptr<assfire::logger::Logger> logger, Session::Id session_id)
-            : _logger(std::move(logger)),
+        LoggingProgressTracker(Session::Id session_id)
+            : _logger(logger::LoggerProvider::get("assfire.optimizer.LoggingProgressTracker")),
               _session_id(session_id),
               _current_progress(0) {}
 
@@ -34,10 +35,8 @@ namespace assfire::optimizer {
         ProgressListener _progress_listener; // [TODO] Thread safety
     };
 
-    LoggingProgressTrackerProvider::LoggingProgressTrackerProvider(std::shared_ptr<assfire::logger::Logger> logger) : _logger(logger) {}
-
     std::shared_ptr<ProgressTracker> LoggingProgressTrackerProvider::get_progress_tracker(Session::Id session_id) const {
-        return std::make_shared<LoggingProgressTracker>(_logger, session_id);
+        return std::make_shared<LoggingProgressTracker>(session_id);
     }
 
 } // namespace assfire::optimizer

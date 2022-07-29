@@ -2,6 +2,7 @@
 
 #include "OptimizationError.hpp"
 #include "SessionStateError.hpp"
+#include "assfire/logger/api/LoggerProvider.hpp"
 
 namespace assfire::optimizer {
 
@@ -11,7 +12,8 @@ namespace assfire::optimizer {
           _task(task),
           _optimization_context(std::move(optimization_context)),
           _optimization_strategy(std::move(optimization_strategy)),
-          _status(Status::QUEUED) {}
+          _status(Status::QUEUED),
+          _logger(assfire::logger::LoggerProvider::get("assfire.optimizer.EngineSession")) {}
 
     Session::Id EngineSession::id() const {
         return _id;
@@ -20,6 +22,7 @@ namespace assfire::optimizer {
     void EngineSession::cancel() {
         Status expected_status = Status::IN_PROGRESS;
         if (!_status.compare_exchange_strong(expected_status, Status::CANCELLED)) {
+            _logger->error("Trying to cancel session {} but it wasn't started", _id);
             throw SessionStateError("Trying to cancel optimization session that isn't in progress");
         }
         _optimization_context->interrupt();
@@ -27,12 +30,18 @@ namespace assfire::optimizer {
     }
 
     void EngineSession::wait_until_completed() const {
-        if (_status == Status::QUEUED) { throw SessionStateError("Optimization session was not started [wait_until_completed_for]"); }
+        if (_status == Status::QUEUED) {
+            _logger->error("Trying to wait until session {} completed but it wasn't yet started", _id);
+            throw SessionStateError("Optimization session was not started [wait_until_completed_for]");
+        }
         if (_done_future.valid()) { _done_future.wait(); }
     }
 
     bool EngineSession::wait_until_completed_for(std::chrono::milliseconds interval_ms) const {
-        if (_status == Status::QUEUED) { throw SessionStateError("Optimization session was not started [wait_until_completed]"); }
+        if (_status == Status::QUEUED) {
+            _logger->error("Trying to wait until session {} completed but it wasn't yet started", _id);
+            throw SessionStateError("Optimization session was not started [wait_until_completed]");
+        }
         if (_done_future.valid()) {
             std::future_status status = _done_future.wait_for(interval_ms);
             if (status == std::future_status::timeout) { return false; }
@@ -66,8 +75,11 @@ namespace assfire::optimizer {
 
         Status expected_status = Status::QUEUED;
         if (!_status.compare_exchange_strong(expected_status, Status::IN_PROGRESS)) {
+            _logger->info("Trying to double-start session {}. This isn't allowed", _id);
             throw SessionStateError("Trying to double-start optimization session [start]");
         }
+
+        _logger->info("Starting session {}", _id);
 
         notify_status_change();
 
@@ -78,14 +90,16 @@ namespace assfire::optimizer {
                 if (_status.compare_exchange_strong(expected_status, Status::FINISHED)) {
                     // [TODO] Could be cancelled
                     notify_status_change();
+
+                    _logger->info("Session {} successfully finished", _id);
                 };
             } catch (const OptimizationError& e) {
-                // [TODO] Log message
+                _logger->error("Session {} crashed unexpectedly", _id);
                 _status.store(Status::FAILED);
                 notify_status_change();
                 throw;
             } catch (...) {
-                // [TODO] Log message
+                _logger->error("Session {} crashed unexpectedly", _id);
                 _status.store(Status::FAILED);
                 notify_status_change();
                 throw;

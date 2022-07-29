@@ -95,7 +95,7 @@ git_repository(
 
 git_repository(
     name = "com_github_assfire_assfire_logger",
-    commit = "2a72d3e9b5545536f9f615a9b60ad8c0f97ee9ff",
+    commit = "5fd0492c148a4c677a73e86355c9f54f08bf538a",
     remote = "https://github.com/Assfire/assfire-logger.git",
     shallow_since = "1659044522 +0300"
 )
