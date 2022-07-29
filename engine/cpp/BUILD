@@ -29,10 +29,10 @@ cc_library(
     ],
     include_prefix = "assfire/optimizer/engine/",
     strip_include_prefix = "assfire/optimizer/engine/",
+    visibility = ["//visibility:public"],
     deps = [
         "//api/cpp:assfire_optimizer_cc_api",
         "@com_github_assfire_assfire_logger//api/cpp:assfire_logger_cc_api",
-        "@com_github_assfire_assfire_logger//impl/cpp:assfire_logger_cc_impl_spdlog",
         "@com_github_assfire_assfire_router//api/cpp:assfire_router_cc_api",
     ],
 )

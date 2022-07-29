@@ -26,7 +26,7 @@ namespace assfire::optimizer {
         virtual uint8_t current_progress() const override;
         virtual void set_progress_listener(ProgressListener listener) override;
 
-        void start();
+        virtual void start() override;
 
       private:
         void notify_status_change();
