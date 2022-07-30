@@ -100,6 +100,13 @@ git_repository(
     shallow_since = "1659044522 +0300"
 )
 
+git_repository(
+    name = "com_github_assfire_assfire_messenger",
+    commit = "4c9b862120fe826908dc1cc72db19726432520dd",
+    remote = "https://github.com/Assfire/assfire-messenger.git",
+    shallow_since = "1659184811 +0300"
+)
+
 load("@com_github_assfire_assfire_logger//:bazel/dependencies.bzl", "assfire_logger_dependencies_spdlog")
 
 assfire_logger_dependencies_spdlog("@com_github_assfire_assfire_logger")

@@ -1,24 +1,48 @@
 #pragma once
 
+#include "HeartbeatPublisher.hpp"
+#include "ProgressPublisher.hpp"
+#include "SolutionPublisher.hpp"
+#include "StatusPublisher.hpp"
+#include "TaskProvider.hpp"
+#include "TaskSignalListener.hpp"
 #include "assfire/logger/api/Logger.hpp"
 #include "assfire/optimizer/api/RouteOptimizer.hpp"
 #include "assfire/optimizer/api/Session.hpp"
 
-#include <mutex>
+#include <atomic>
+#include <future>
 
 namespace assfire::optimizer {
     class Worker {
       public:
-        Worker(std::shared_ptr<RouteOptimizer> engine);
+        enum class State { NOT_STARTED, STARTED, INTERRUPTED };
 
-        void process(const Task& task, const OptimizationStrategyId& optimization_strategy_id, Session::StatusListener status_listener,
-                     Session::ProgressListener progress_listener);
-        void cancel(const std::string& task_id);
+        Worker(std::shared_ptr<RouteOptimizer> engine, std::shared_ptr<TaskProvider> task_provider,
+               std::shared_ptr<HeartbeatPublisher> heartbeat_publisher, std::shared_ptr<ProgressPublisher> progress_publisher,
+               std::shared_ptr<StatusPublisher> status_publisher, std::shared_ptr<SolutionPublisher> solution_publisher,
+               std::shared_ptr<TaskSignalListener> task_signal_listener);
+
+        void start();
+        void stop();
 
       private:
-        std::mutex _mtx;
+        void cleanup_sessions();
+        void wait_for_sessions_to_complete();
+
+        std::atomic<State> _state;
         std::shared_ptr<RouteOptimizer> _engine;
-        std::shared_ptr<Session> _current_session;
+
+        std::shared_ptr<TaskProvider> _task_provider;
+        std::shared_ptr<HeartbeatPublisher> _heartbeat_publisher;
+        std::shared_ptr<ProgressPublisher> _progress_publisher;
+        std::shared_ptr<StatusPublisher> _status_publisher;
+        std::shared_ptr<SolutionPublisher> _solution_publisher;
+        std::shared_ptr<TaskSignalListener> _task_signal_listener;
+
+        std::unordered_map<std::string, std::shared_ptr<Session>> _active_sessions;
+
         std::shared_ptr<logger::Logger> _logger;
+        std::future<void> _work_ftr;
     };
 } // namespace assfire::optimizer

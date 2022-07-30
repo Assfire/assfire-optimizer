@@ -13,7 +13,8 @@ namespace assfire::optimizer {
 
         using Id               = std::string;
         using StatusListener   = std::function<void(Status)>;
-        using ProgressListener = std::function<void(uint8_t)>;
+        using ProgressValue    = uint8_t;
+        using ProgressListener = std::function<void(ProgressValue)>;
 
         virtual ~Session()                                                                 = default;
         virtual Id id() const                                                              = 0;
@@ -24,7 +25,7 @@ namespace assfire::optimizer {
         virtual Status current_status() const                                              = 0;
         virtual void set_status_listener(StatusListener listener)                          = 0;
         virtual std::optional<Solution> latest_solution() const                            = 0;
-        virtual uint8_t current_progress() const                                           = 0;
+        virtual ProgressValue current_progress() const                                     = 0;
         virtual void set_progress_listener(ProgressListener listener)                      = 0;
 
         bool is_in_terminal_state() const {

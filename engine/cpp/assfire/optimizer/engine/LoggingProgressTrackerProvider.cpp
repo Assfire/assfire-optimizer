@@ -14,13 +14,13 @@ namespace assfire::optimizer {
               _session_id(session_id),
               _current_progress(0) {}
 
-        virtual void set_progress(uint8_t percent) override {
+        virtual void set_progress(ProgressValue percent) override {
             _logger->info("Current progress for session {}: {}%", _session_id, percent);
             _current_progress = percent;
             if (_progress_listener) { _progress_listener(_current_progress); }
         }
 
-        virtual uint8_t progress() const override {
+        virtual ProgressValue progress() const override {
             return _current_progress;
         }
 
@@ -31,7 +31,7 @@ namespace assfire::optimizer {
       private:
         std::shared_ptr<assfire::logger::Logger> _logger;
         Session::Id _session_id;
-        std::atomic_int8_t _current_progress;
+        std::atomic_uint8_t _current_progress;
         ProgressListener _progress_listener; // [TODO] Thread safety
     };
 

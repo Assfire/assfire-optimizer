@@ -3,23 +3,16 @@
 #include <stdexcept>
 
 namespace assfire::optimizer {
-    class TaskAlreadyInProgress : public std::logic_error {
+    class WorkerAlreadyStarted : public std::logic_error {
       public:
-        TaskAlreadyInProgress(const char* what) : std::logic_error(what) {}
+        WorkerAlreadyStarted(const char* what) : std::logic_error(what) {}
     };
-
-    class TaskNotFound : public std::logic_error {
+    class WorkerNotStarted : public std::logic_error {
       public:
-        TaskNotFound(const char* what) : std::logic_error(what) {}
+        WorkerNotStarted(const char* what) : std::logic_error(what) {}
     };
-
-    class TaskMismatched : public std::logic_error {
+    class SignalListenerInterrupted : public std::logic_error {
       public:
-        TaskMismatched(const char* what) : std::logic_error(what) {}
-    };
-
-    class SupervisorChannelTimeout : public std::logic_error {
-      public:
-        SupervisorChannelTimeout(const char* what) : std::logic_error(what) {}
+        SignalListenerInterrupted(const char* what) : std::logic_error(what) {}
     };
 } // namespace assfire::optimizer

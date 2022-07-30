@@ -23,7 +23,7 @@ namespace assfire::optimizer {
         virtual Status current_status() const override;
         virtual void set_status_listener(StatusListener listener) override;
         virtual std::optional<Solution> latest_solution() const override;
-        virtual uint8_t current_progress() const override;
+        virtual ProgressValue current_progress() const override;
         virtual void set_progress_listener(ProgressListener listener) override;
 
         virtual void start() override;
