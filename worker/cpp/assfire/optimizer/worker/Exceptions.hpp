@@ -15,4 +15,14 @@ namespace assfire::optimizer {
       public:
         SignalListenerInterrupted(const char* what) : std::logic_error(what) {}
     };
+
+    class MessageStreamClosed : public std::runtime_error {
+      public:
+        MessageStreamClosed(const char* what) : std::runtime_error(what) {}
+    };
+
+    class IllegalMessageFormat : public std::runtime_error {
+      public:
+        IllegalMessageFormat(const char* what) : std::runtime_error(what) {}
+    };
 } // namespace assfire::optimizer

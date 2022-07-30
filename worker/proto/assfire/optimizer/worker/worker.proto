@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package assfire.optimizer.worker;
+import "assfire/api/v1/optimizer/optimizer.proto";
+
+message TaskSignal {
+    enum Type {
+        TASK_SIGNAL_TYPE_START = 0;
+        TASK_SIGNAL_TYPE_CANCEL = 1;
+    }
+
+    string task_id = 1;
+    Type type = 2;
+}
+
+message ProgressUpdate {
+    int32 new_progress = 1;
+}
+
+message StatusUpdate {
+    assfire.api.v1.optimizer.SolutionStatus new_status = 1;
+}
+
+message WorkerTask {
+    assfire.api.v1.optimizer.OptimizationTask task = 1;
+    string optimization_strategy_id = 2;
+}
+
+message Heartbeat {
+
+}

@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package assfire.api.v1.optimizer;
-option go_package = "assfire.org/api/v1/router";
+option go_package = "assfire.org/api/v1/optimizer";
 
 message GeoPoint {
     sint32 lat = 1;
@@ -148,6 +148,6 @@ message GetAvailableTransportProfilesResponse {
 }
 
 service ConfigurationService {
-    rpc GetAvailableStrategies(GetAvailableStrategiesRequest) return (GetAvailableStrategiesResponse) {}
+    rpc GetAvailableStrategies(GetAvailableStrategiesRequest) returns (GetAvailableStrategiesResponse) {}
     rpc GetAvailableTransportProfiles(GetAvailableTransportProfilesRequest) returns (GetAvailableTransportProfilesResponse) {};
 }

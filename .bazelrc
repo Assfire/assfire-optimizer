@@ -1,6 +1,6 @@
 build --features=external_include_paths
 build --cxxopt="-std=c++20"
-build --copt="-Wno-error=private-header" --copt="-Werror=delete-non-abstract-non-virtual-dtor"
+build --copt="-Wno-error=private-header" --copt="-Werror=delete-non-abstract-non-virtual-dtor" --copt="-Werror=return-type"
 
 build:debug -c dbg
 build:debug --javacopt="-g"
