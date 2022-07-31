@@ -25,4 +25,9 @@ namespace assfire::optimizer {
       public:
         IllegalMessageFormat(const char* what) : std::runtime_error(what) {}
     };
+
+    class UnsupportedStatus : public std::invalid_argument {
+      public:
+        UnsupportedStatus(const char* what) : std::invalid_argument(what) {}
+    };
 } // namespace assfire::optimizer

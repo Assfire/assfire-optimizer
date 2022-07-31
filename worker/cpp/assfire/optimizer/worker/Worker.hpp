@@ -2,10 +2,10 @@
 
 #include "HeartbeatPublisher.hpp"
 #include "ProgressPublisher.hpp"
-#include "SolutionPublisher.hpp"
 #include "StatusPublisher.hpp"
 #include "TaskProvider.hpp"
 #include "TaskSignalListener.hpp"
+#include "WorkerSolutionPublisher.hpp"
 #include "assfire/logger/api/Logger.hpp"
 #include "assfire/optimizer/api/RouteOptimizer.hpp"
 #include "assfire/optimizer/api/Session.hpp"
@@ -20,7 +20,7 @@ namespace assfire::optimizer {
 
         Worker(std::shared_ptr<RouteOptimizer> engine, std::shared_ptr<TaskProvider> task_provider,
                std::shared_ptr<HeartbeatPublisher> heartbeat_publisher, std::shared_ptr<ProgressPublisher> progress_publisher,
-               std::shared_ptr<StatusPublisher> status_publisher, std::shared_ptr<SolutionPublisher> solution_publisher,
+               std::shared_ptr<StatusPublisher> status_publisher, std::shared_ptr<WorkerSolutionPublisher> solution_publisher,
                std::shared_ptr<TaskSignalListener> task_signal_listener);
 
         void start();
@@ -37,7 +37,7 @@ namespace assfire::optimizer {
         std::shared_ptr<HeartbeatPublisher> _heartbeat_publisher;
         std::shared_ptr<ProgressPublisher> _progress_publisher;
         std::shared_ptr<StatusPublisher> _status_publisher;
-        std::shared_ptr<SolutionPublisher> _solution_publisher;
+        std::shared_ptr<WorkerSolutionPublisher> _solution_publisher;
         std::shared_ptr<TaskSignalListener> _task_signal_listener;
 
         std::unordered_map<std::string, std::shared_ptr<Session>> _active_sessions;

@@ -95,17 +95,10 @@ git_repository(
 
 git_repository(
     name = "com_github_assfire_assfire_messenger",
-    commit = "4c9b862120fe826908dc1cc72db19726432520dd",
+    commit = "7d8fa236bfecd7e7469fb0adb974cc245ccba938",
     remote = "https://github.com/Assfire/assfire-messenger.git",
-    shallow_since = "1659184811 +0300"
+    shallow_since = "1659270092 +0300"
 )
-
-# http_archive(
-#     name = "com_google_absl",
-#     sha256 = "aabf6c57e3834f8dc3873a927f37eaf69975d4b28117fc7427dfb1c661542a87",
-#     strip_prefix = "abseil-cpp-98eb410c93ad059f9bba1bf43f5bb916fc92a5ea",
-#     urls = ["https://github.com/abseil/abseil-cpp/archive/98eb410c93ad059f9bba1bf43f5bb916fc92a5ea.zip"],
-# )
 
 load("@com_github_assfire_assfire_logger//:bazel/dependencies.bzl", "assfire_logger_dependencies_spdlog")
 

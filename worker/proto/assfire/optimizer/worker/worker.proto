@@ -14,11 +14,13 @@ message TaskSignal {
 }
 
 message ProgressUpdate {
-    int32 new_progress = 1;
+    string task_id = 1;
+    int32 new_progress = 2;
 }
 
 message StatusUpdate {
-    assfire.api.v1.optimizer.SolutionStatus new_status = 1;
+    string task_id = 1;
+    assfire.api.v1.optimizer.SolutionStatus new_status = 2;
 }
 
 message WorkerTask {
@@ -27,5 +29,10 @@ message WorkerTask {
 }
 
 message Heartbeat {
+    string worker_id = 1;
+}
 
+message SolutionUpdate {
+    string task_id = 1;
+    assfire.api.v1.optimizer.Solution solution = 2;
 }

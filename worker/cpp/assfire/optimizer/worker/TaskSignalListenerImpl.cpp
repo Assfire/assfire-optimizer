@@ -26,11 +26,12 @@ namespace assfire::optimizer {
     TaskSignal TaskSignalListenerImpl::next() {
         std::optional<Message> msg = _message_consumer->next_message();
         if (!msg) { throw MessageStreamClosed("Task signal stream closed unexpectedly"); }
-        worker::TaskSignal proto_signal;
-        proto_signal.ParseFromArray(msg->payload().data(), msg->payload().size());
+        worker::TaskSignal proto_signal = messenger::unpack<worker::TaskSignal>(msg->payload());
         return TaskSignal(convertSignalType(proto_signal.type()), proto_signal.task_id());
     }
 
-    void TaskSignalListenerImpl::interrupt() {}
+    void TaskSignalListenerImpl::interrupt() {
+        _message_consumer->interrupt();
+    }
 
 } // namespace assfire::optimizer

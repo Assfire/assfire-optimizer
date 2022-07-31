@@ -8,7 +8,7 @@ using namespace std::chrono_literals;
 namespace assfire::optimizer {
     Worker::Worker(std::shared_ptr<RouteOptimizer> engine, std::shared_ptr<TaskProvider> task_provider,
                    std::shared_ptr<HeartbeatPublisher> heartbeat_publisher, std::shared_ptr<ProgressPublisher> progress_publisher,
-                   std::shared_ptr<StatusPublisher> status_publisher, std::shared_ptr<SolutionPublisher> solution_publisher,
+                   std::shared_ptr<StatusPublisher> status_publisher, std::shared_ptr<WorkerSolutionPublisher> solution_publisher,
                    std::shared_ptr<TaskSignalListener> task_signal_listener)
         : _state(State::NOT_STARTED),
           _engine(engine),
@@ -47,11 +47,7 @@ namespace assfire::optimizer {
                             _logger->info("Starting new optimization session {} ...", signal.task_id());
                             std::shared_ptr<Session> session = _engine->solve(task.task(), task.strategy_id(), false);
                             session->set_progress_listener([&](Session::ProgressValue p) { _progress_publisher->publish(signal.task_id(), p); });
-                            session->set_status_listener([&](Session::Status s) {
-                                if (session->is_in_terminal_state()) { _heartbeat_publisher->on_task_finished(); }
-                                _status_publisher->publish(signal.task_id(), s);
-                            });
-                            _heartbeat_publisher->on_task_started();
+                            session->set_status_listener([&](Session::Status s) { _status_publisher->publish(signal.task_id(), s); });
                             session->start();
                             _active_sessions.emplace(signal.task_id(), session);
                         }
