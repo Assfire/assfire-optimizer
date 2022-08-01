@@ -9,7 +9,7 @@ namespace assfire::optimizer {
     class TaskSignalListenerImpl : public TaskSignalListener {
       public:
         virtual TaskSignal next() override;
-        virtual void interrupt() override;
+        virtual void stop() override;
 
       private:
         std::shared_ptr<messenger::Consumer> _message_consumer;

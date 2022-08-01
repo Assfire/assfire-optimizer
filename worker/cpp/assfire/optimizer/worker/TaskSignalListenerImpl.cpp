@@ -30,8 +30,8 @@ namespace assfire::optimizer {
         return TaskSignal(convertSignalType(proto_signal.type()), proto_signal.task_id());
     }
 
-    void TaskSignalListenerImpl::interrupt() {
-        _message_consumer->interrupt();
+    void TaskSignalListenerImpl::stop() {
+        _message_consumer->stop();
     }
 
 } // namespace assfire::optimizer

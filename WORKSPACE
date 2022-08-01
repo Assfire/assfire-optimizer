@@ -90,14 +90,14 @@ git_repository(
     name = "com_github_assfire_assfire_logger",
     commit = "5fd0492c148a4c677a73e86355c9f54f08bf538a",
     remote = "https://github.com/Assfire/assfire-logger.git",
-    shallow_since = "1659044522 +0300"
+    shallow_since = "1659044522 +0300",
 )
 
 git_repository(
     name = "com_github_assfire_assfire_messenger",
-    commit = "7d8fa236bfecd7e7469fb0adb974cc245ccba938",
+    commit = "ddedf101a2a330ceb2df8e596ab8ca1a94772c3a",
     remote = "https://github.com/Assfire/assfire-messenger.git",
-    shallow_since = "1659270092 +0300"
+    shallow_since = "1659383642 +0300",
 )
 
 load("@com_github_assfire_assfire_logger//:bazel/dependencies.bzl", "assfire_logger_dependencies_spdlog")

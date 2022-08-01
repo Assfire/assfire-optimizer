@@ -42,3 +42,31 @@ cc_binary(
         "@com_github_assfire_assfire_logger//impl/cpp:assfire_logger_cc_impl_spdlog",
     ],
 )
+
+cc_library(
+    name = "assfire_optimizer_cc_worker_mock",
+    hdrs = [
+        "assfire/optimizer/worker/test/MockHeartbeatPublisher.hpp",
+        "assfire/optimizer/worker/test/MockProgressPublisher.hpp",
+        "assfire/optimizer/worker/test/MockStatusPublisher.hpp",
+        "assfire/optimizer/worker/test/MockTaskProvider.hpp",
+        "assfire/optimizer/worker/test/MockTaskSignalListener.hpp",
+        "assfire/optimizer/worker/test/MockWorkerSolutionPublisher.hpp",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":assfire_optimizer_cc_worker",
+        "@com_google_googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "assfire_optimizer_cc_worker_test",
+    srcs = [
+        "assfire/optimizer/worker/test/Worker_Test.cpp",
+    ],
+    deps = [
+        ":assfire_optimizer_cc_worker",
+        ":assfire_optimizer_cc_worker_mock",
+    ],
+)

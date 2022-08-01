@@ -89,7 +89,7 @@ namespace assfire::optimizer {
 
         _logger->info("Stopping accepting new tasks...");
 
-        _task_signal_listener->interrupt();
+        _task_signal_listener->stop();
 
         _logger->info("Waiting for current tasks to finish...");
 

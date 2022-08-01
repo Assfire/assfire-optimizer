@@ -37,17 +37,27 @@ cc_library(
     ],
 )
 
-cc_test(
-    name = "assfire_optimizer_cc_engine_test",
-    srcs = [
-        "assfire/optimizer/engine/test/EngineSession_Test.cpp",
+cc_library(
+    name = "assfire_optimizer_cc_engine_mock",
+    hdrs = [
         "assfire/optimizer/engine/test/MockOptimizationStrategy.hpp",
         "assfire/optimizer/engine/test/MockProgressTracker.hpp",
         "assfire/optimizer/engine/test/MockSolutionPublisher.hpp",
         "assfire/optimizer/engine/test/MockStateManager.hpp",
     ],
+    visibility = ["//visibility:public"],
     deps = [
         ":assfire_optimizer_cc_engine",
         "@com_google_googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "assfire_optimizer_cc_engine_test",
+    srcs = [
+        "assfire/optimizer/engine/test/EngineSession_Test.cpp",
+    ],
+    deps = [
+        ":assfire_optimizer_cc_engine_mock",
     ],
 )

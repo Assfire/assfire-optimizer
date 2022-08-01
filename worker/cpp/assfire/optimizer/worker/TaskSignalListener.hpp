@@ -8,6 +8,6 @@ namespace assfire::optimizer {
         virtual ~TaskSignalListener() = default;
         virtual TaskSignal next()     = 0;
 
-        virtual void interrupt() = 0;
+        virtual void stop() = 0;
     };
 } // namespace assfire::optimizer
