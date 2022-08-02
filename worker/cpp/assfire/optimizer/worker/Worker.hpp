@@ -23,6 +23,8 @@ namespace assfire::optimizer {
                std::shared_ptr<StatusPublisher> status_publisher, std::shared_ptr<WorkerSolutionPublisher> solution_publisher,
                std::shared_ptr<TaskSignalListener> task_signal_listener);
 
+        ~Worker();
+
         void start();
         void stop();
 

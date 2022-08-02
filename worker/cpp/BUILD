@@ -27,6 +27,8 @@ cc_library(
         "assfire/optimizer/worker/WorkerSolutionPublisherProvider.hpp",
         "assfire/optimizer/worker/WorkerTask.hpp",
     ],
+    include_prefix = "assfire/optimizer/worker/",
+    strip_include_prefix = "assfire/optimizer/worker/",
     deps = [
         "//engine/cpp:assfire_optimizer_cc_engine",
         "//worker/proto:assfire_optimizer_worker_cc_proto",
@@ -53,9 +55,11 @@ cc_library(
         "assfire/optimizer/worker/test/MockTaskSignalListener.hpp",
         "assfire/optimizer/worker/test/MockWorkerSolutionPublisher.hpp",
     ],
+    include_prefix = "assfire/optimizer/worker/",
+    strip_include_prefix = "assfire/optimizer/worker/",
     visibility = ["//visibility:public"],
     deps = [
-        ":assfire_optimizer_cc_worker",
+        ":assfire_optimizer_cc_worker_lib",
         "@com_google_googletest//:gtest_main",
     ],
 )
@@ -66,7 +70,9 @@ cc_test(
         "assfire/optimizer/worker/test/Worker_Test.cpp",
     ],
     deps = [
-        ":assfire_optimizer_cc_worker",
+        ":assfire_optimizer_cc_worker_lib",
         ":assfire_optimizer_cc_worker_mock",
+        "//api/cpp:assfire_optimizer_cc_api_mock",
+        "@com_github_assfire_assfire_logger//impl/cpp:assfire_logger_cc_impl_spdlog",
     ],
 )

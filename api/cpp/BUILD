@@ -21,3 +21,14 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = ["@com_google_absl//absl/time"],
 )
+
+cc_library(
+    name = "assfire_optimizer_cc_api_mock",
+    hdrs = [
+        "assfire/optimizer/api/test/MockRouteOptimizer.hpp",
+        "assfire/optimizer/api/test/MockSession.hpp",
+    ],
+    include_prefix = "assfire/optimizer/api/test",
+    strip_include_prefix = "assfire/optimizer/api/test",
+    visibility = ["//visibility:public"],
+)

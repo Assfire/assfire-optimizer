@@ -18,7 +18,7 @@ namespace assfire::optimizer {
                              std::shared_ptr<StateManagerProvider> state_manager_provider,
                              std::shared_ptr<ProgressTrackerProvider> progress_tracker_provider);
 
-        virtual std::unique_ptr<Session> solve(const Task& task, const OptimizationStrategyId& optimization_strategy_id, bool auto_start = true) const override;
+        virtual std::shared_ptr<Session> solve(const Task& task, const OptimizationStrategyId& optimization_strategy_id, bool auto_start = true) const override;
 
       private:
         std::shared_ptr<OptimizationStrategyProvider> _optimization_strategy_provider;

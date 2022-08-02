@@ -45,6 +45,8 @@ cc_library(
         "assfire/optimizer/engine/test/MockSolutionPublisher.hpp",
         "assfire/optimizer/engine/test/MockStateManager.hpp",
     ],
+    include_prefix = "assfire/optimizer/engine/test/",
+    strip_include_prefix = "assfire/optimizer/engine/test/",
     visibility = ["//visibility:public"],
     deps = [
         ":assfire_optimizer_cc_engine",

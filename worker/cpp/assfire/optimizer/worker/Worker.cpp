@@ -20,11 +20,27 @@ namespace assfire::optimizer {
           _task_signal_listener(task_signal_listener),
           _logger(logger::LoggerProvider::get("assfire.optimizer.Worker")) {}
 
+    Worker::~Worker() {
+        _logger->info("Stopping worker");
+
+        State expected_state = State::STARTED;
+        if (_state.compare_exchange_strong(expected_state, State::INTERRUPTED)) {
+            _logger->info("Stopping accepting new tasks...");
+
+            _task_signal_listener->stop();
+
+            _logger->info("Waiting for current tasks to finish...");
+
+            _work_ftr.wait();
+        }
+        _logger->info("Worker stopped");
+    }
+
     void Worker::start() {
         _logger->info("Starting worker...");
         State expected_state = State::NOT_STARTED;
         if (!_state.compare_exchange_strong(expected_state, State::STARTED)) {
-            _logger->error("Trying to start worker while it's still in active state");
+            _logger->error("Trying to start worker but it's already started");
             throw WorkerAlreadyStarted("Worker is already started or is being interrupted. Double start is not allowed");
         }
 
@@ -71,31 +87,11 @@ namespace assfire::optimizer {
             _heartbeat_publisher->stop();
             wait_for_sessions_to_complete();
             _active_sessions.clear();
-            _state = State::NOT_STARTED;
             _logger->info("Worker event-loop is stopped");
         });
 
         _heartbeat_publisher->start();
-    }
-
-    void Worker::stop() {
-        _logger->info("Stopping worker");
-
-        State expected_state = State::STARTED;
-        if (!_state.compare_exchange_strong(expected_state, State::INTERRUPTED)) {
-            _logger->error("Trying to interrupt worker while it's not in active state or is already being interrupted");
-            throw WorkerNotStarted("Worker is not started or is already being interrupted. Double start is not allowed");
-        }
-
-        _logger->info("Stopping accepting new tasks...");
-
-        _task_signal_listener->stop();
-
-        _logger->info("Waiting for current tasks to finish...");
-
-        _work_ftr.wait();
-
-        _logger->info("Worker stopped");
+        _logger->info("Worker started");
     }
 
     void Worker::cleanup_sessions() {

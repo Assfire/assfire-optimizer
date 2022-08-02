@@ -26,7 +26,8 @@ namespace assfire::optimizer {
           _state_manager_provider(state_manager_provider),
           _progress_tracker_provider(progress_tracker_provider) {}
 
-    std::unique_ptr<Session> RouteOptimizerEngine::solve(const Task& task, const OptimizationStrategyId& optimization_strategy_id, bool auto_start) const {
+    std::shared_ptr<Session> RouteOptimizerEngine::solve(const Task& task, const OptimizationStrategyId& optimization_strategy_id,
+                                                         bool auto_start) const {
         std::shared_ptr<OptimizationStrategy> optimization_strategy =
             _optimization_strategy_provider->get_optimization_strategy(optimization_strategy_id);
         std::shared_ptr<SolutionPublisher> solution_publisher = _solution_publisher_provider->get_solution_publisher(task.id());
@@ -36,8 +37,8 @@ namespace assfire::optimizer {
         std::shared_ptr<OptimizationContext> optimization_context =
             std::make_shared<OptimizationContext>(solution_publisher, state_manager, progress_tracker);
 
-        std::unique_ptr<EngineSession> session =
-            std::make_unique<EngineSession>(std::make_shared<Task>(task), optimization_context, optimization_strategy);
+        std::shared_ptr<EngineSession> session =
+            std::make_shared<EngineSession>(std::make_shared<Task>(task), optimization_context, optimization_strategy);
 
         session->start();
 
