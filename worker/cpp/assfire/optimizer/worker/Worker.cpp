@@ -15,7 +15,7 @@ namespace assfire::optimizer {
           _task_provider(task_provider),
           _heartbeat_publisher(heartbeat_publisher),
           _progress_publisher(progress_publisher),
-
+          _status_publisher(status_publisher),
           _solution_publisher(solution_publisher),
           _task_signal_listener(task_signal_listener),
           _logger(logger::LoggerProvider::get("assfire.optimizer.Worker")) {}
