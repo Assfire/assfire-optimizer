@@ -26,6 +26,7 @@ cc_library(
         "assfire/optimizer/worker/WorkerSolutionPublisherImpl.hpp",
         "assfire/optimizer/worker/WorkerSolutionPublisherProvider.hpp",
         "assfire/optimizer/worker/WorkerTask.hpp",
+        "assfire/optimizer/worker/SessionsStorage.hpp",
     ],
     include_prefix = "assfire/optimizer/worker/",
     strip_include_prefix = "assfire/optimizer/worker/",

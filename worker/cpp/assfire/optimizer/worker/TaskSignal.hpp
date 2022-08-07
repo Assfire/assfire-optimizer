@@ -5,7 +5,7 @@
 namespace assfire::optimizer {
     class TaskSignal {
       public:
-        enum class Type { START, CANCEL };
+        enum class Type { START, CANCEL, IGNORE };
 
         TaskSignal() : _type(Type::START) {}
         TaskSignal(Type type, const std::string& id) : _type(type), _task_id(id) {}
