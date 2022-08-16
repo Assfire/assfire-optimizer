@@ -72,6 +72,7 @@ message OptimizationTask {
     repeated Vehicle vehicles = 2;
     repeated Order orders = 3;
     repeated BasePoint base_points = 4;
+    string optimization_strategy_id = 5;
 }
 
 message PublishOptimizationTaskRequest {

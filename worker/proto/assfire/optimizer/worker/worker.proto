@@ -23,11 +23,6 @@ message StatusUpdate {
     assfire.api.v1.optimizer.SolutionStatus new_status = 2;
 }
 
-message WorkerTask {
-    assfire.api.v1.optimizer.OptimizationTask task = 1;
-    string optimization_strategy_id = 2;
-}
-
 message Heartbeat {
     string worker_id = 1;
 }
